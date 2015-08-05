@@ -5,3 +5,4 @@ This repository contains some fixes to use rgrass7 with GRASS GIS 7.0.0 on ARCH 
 
 At the moment there are fixes for 
 - `vect2neigh`
+- `writeVECT`
