@@ -257,7 +257,8 @@ readVECT <- function(vname, layer, type=NULL, plugin=get.pluginOption(),
 }
 
 writeVECT <- function(SDF, vname, #factor2char = TRUE, 
-                      v.in.ogr_flags=NULL, ignore.stderr = get.ignore.stderrOption(), driver="ESRI Shapefile") {
+                      v.in.ogr_flags=NULL, ignore.stderr = get.ignore.stderrOption(), driver="ESRI Shapefile",
+                      min_area=0.0001, snap=-1) {
 
     if (get.suppressEchoCmdInFuncOption()) {
         inEchoCmd <- set.echoCmdOption(FALSE)
@@ -272,7 +273,8 @@ writeVECT <- function(SDF, vname, #factor2char = TRUE,
             if (!(driver %in% ogrD))
                 stop(paste("Requested driver", driver, "not available in rgdal"))
             ogrDGRASS <- execGRASS("v.in.ogr", flags="f", intern=TRUE,
-                                   ignore.stderr=ignore.stderr)
+                                   ignore.stderr=ignore.stderr, min_area=min_area,
+                                   snap=snap)
             ogrDGRASSs <- strsplit(ogrDGRASS, ": ")
             if (!(driver %in% sapply(ogrDGRASSs, "[", 2)))
                 stop(paste("Requested driver", driver, "not available in GRASS"))
