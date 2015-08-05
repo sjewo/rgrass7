@@ -317,7 +317,7 @@ writeVECT <- function(SDF, vname, #factor2char = TRUE,
                     
                     
                     execGRASS("v.in.ogr", flags=v.in.ogr_flags,
-                              input=GDSN, output=vname, layer=as.integer(LAYER),
+                              input=GDSN, output=vname, layer=as.character(LAYER),
                               ignore.stderr=ignore.stderr)
                 },
                 finally = {
@@ -490,7 +490,6 @@ vect2neigh <- function(vname, ID=NULL, ignore.stderr = NULL, remove=TRUE,
 
     n <- vDataCount(vname, ignore.stderr=ignore.stderr)
 
-
     if (!is.null(ID)) {
 		if (!is.character(ID)) stop("ID not character string")
 #		cmd <- paste(paste("v.info", .addexe(), sep=""),
@@ -611,10 +610,8 @@ vect2neigh <- function(vname, ID=NULL, ignore.stderr = NULL, remove=TRUE,
     t4 <- tapply(t3$length, t3$right, sum)
     external <- numeric(n)
     external[as.integer(names(t4))] <- t4
-    t5 <- t2[!t2$left == -1,]
-    tmp <- t5$left
-    t5$left <- t5$right
-    t5$right <- tmp
+    t5 <- t2[!t2$left == -1, c("right", "left", "length")]
+    names(t5) <- c("left", "right", "length")
     t6 <- rbind(t2, t5)
     total <- c(tapply(t6$length, t6$right, sum))
     res <- t6[!t6$left == -1,]
